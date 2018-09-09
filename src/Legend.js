@@ -11,7 +11,6 @@ export default class Legend extends React.Component {
         <Dot color="red" label="Non-Bike Lanes" />
 
         <Dot color="white" label="" />
-        <Dot color="white" label="" />
 
         <Dot color="#aaa" label="All Bike Routes" />
       </div>
@@ -26,10 +25,7 @@ const Dot = ({ size = 20, color, label }) => {
     >
       <div
         style={{
-          marginTop: 10,
-          marginBottom: 10,
-          marginLeft: 20 - size / 2,
-          marginRight: 20 - size / 2,
+          margin: 10,
           width: size,
           height: size,
           borderRadius: 10,

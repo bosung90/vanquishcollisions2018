@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Map, Polyline, GoogleApiWrapper } from 'google-maps-react'
-import polyline from '@mapbox/polyline'
 import scoreDirections, { getPaths } from './computation'
 import Legend from './Legend'
 
@@ -19,6 +18,7 @@ export class MapContainer extends Component {
     // scoredPolylines
     scoredPolylines: [],
     bikeLanesPolylines: [],
+    drawBikelanes: true,
     bounds: null,
   }
   componentDidMount() {
@@ -153,7 +153,24 @@ export class MapContainer extends Component {
           <button onClick={this.drawPolyline}>DRAW LINE</button>
         </div>
         <div style={styles.fill}>
-          <Legend />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Legend />
+            <div
+              style={{ display: 'flex', flexDirection: 'row', marginLeft: 10 }}
+            >
+              <input
+                id="checkboxInput"
+                name="checkboxInput"
+                type="checkbox"
+                onChange={event => {
+                  this.setState({ drawBikelanes: event.target.checked })
+                }}
+                checked={this.state.drawBikelanes}
+              />
+              <label htmlFor="checkboxInput">Show Bike Lanes</label>
+            </div>
+          </div>
+
           <div
             style={{
               ...styles.fill,
@@ -179,17 +196,19 @@ export class MapContainer extends Component {
             strokeOpacity={0.8}
             strokeWeight={2}
           /> */}
-              {this.state.bikeLanesPolylines.map((val, index) => {
-                return (
-                  <Polyline
-                    key={index}
-                    path={val.polyline}
-                    strokeColor={`#666`}
-                    strokeOpacity={0.4}
-                    strokeWeight={3}
-                  />
-                )
-              })}
+              {this.state.drawBikelanes
+                ? this.state.bikeLanesPolylines.map((val, index) => {
+                    return (
+                      <Polyline
+                        key={index}
+                        path={val.polyline}
+                        strokeColor={`#666`}
+                        strokeOpacity={0.4}
+                        strokeWeight={3}
+                      />
+                    )
+                  })
+                : null}
               {this.state.scoredPolylines.map((val, index) => {
                 let color = 'Red'
                 switch (val.score) {
