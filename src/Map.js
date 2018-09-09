@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Map, Polyline, GoogleApiWrapper } from 'google-maps-react'
 import polyline from '@mapbox/polyline'
 import scoreDirections from './computation'
+import Legend from './Legend'
 
 export class MapContainer extends Component {
   directionsService = new this.props.google.maps.DirectionsService()
@@ -103,10 +104,9 @@ export class MapContainer extends Component {
     return (
       <div
         style={{
+          ...styles.fill,
           flexDirection: 'column',
-          display: 'flex',
           height: '85vh',
-          flex: 1,
         }}
       >
         <div>
@@ -124,51 +124,58 @@ export class MapContainer extends Component {
           />
           <button onClick={this.drawPolyline}>DRAW LINE</button>
         </div>
-        <div
-          style={{
-            marginLeft: 180,
-            display: 'flex',
-            flex: 1,
-            position: 'relative',
-          }}
-        >
-          <Map
+        <div style={styles.fill}>
+          <Legend />
+          <div
             style={{
+              ...styles.fill,
               position: 'relative',
-              width: '100%',
-              height: '100%',
             }}
-            bounds={this.state.bounds}
-            google={this.props.google}
-            initialCenter={{
-              lat: 49.2827,
-              lng: -123.1207,
-            }}
-            zoom={14}
           >
-            {/* <Polyline
+            <Map
+              style={{
+                ...styles.fill,
+                height: '100%',
+              }}
+              bounds={this.state.bounds}
+              google={this.props.google}
+              initialCenter={{
+                lat: 49.257,
+                lng: -123.1207,
+              }}
+              zoom={13}
+            >
+              {/* <Polyline
             path={this.state.polyline}
             strokeColor="#0000FF"
             strokeOpacity={0.8}
             strokeWeight={2}
           /> */}
-            {this.state.scoredPolylines.map((val, index) => {
-              return (
-                <Polyline
-                  key={index}
-                  path={val.polyline}
-                  strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
-                    255}, 0, 1`}
-                  strokeOpacity={0.8}
-                  strokeWeight={4}
-                />
-              )
-            })}
-          </Map>
+              {this.state.scoredPolylines.map((val, index) => {
+                return (
+                  <Polyline
+                    key={index}
+                    path={val.polyline}
+                    strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
+                      255}, 0, 1`}
+                    strokeOpacity={0.8}
+                    strokeWeight={4}
+                  />
+                )
+              })}
+            </Map>
+          </div>
         </div>
       </div>
     )
   }
+}
+
+const styles = {
+  fill: {
+    display: 'flex',
+    flex: 1,
+  },
 }
 
 export default GoogleApiWrapper({
