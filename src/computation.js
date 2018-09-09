@@ -35,7 +35,7 @@ const loadBikePaths = () => {
 
   paths.push(currentPath)
 
-  console.log(paths)
+  // console.log(paths)
 }
 
 const distance = (x1, y1, x2, y2) => {
@@ -126,9 +126,9 @@ const scoreDirections = directions => {
           }
         }
 
-        if (step.score > 0) {
-          console.log(step.score, step)
-        }
+        // if (step.score > 0) {
+        //   console.log(step.score, step)
+        // }
       }
     }
   }
@@ -140,4 +140,6 @@ const test = () => {
 }
 
 loadBikePaths()
-test()
+// test()
+
+export default scoreDirections
