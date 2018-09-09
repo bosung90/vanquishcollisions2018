@@ -196,19 +196,21 @@ export class MapContainer extends Component {
         }}
       >
         <div>
+          From:
           <input
             defaultValue={'Science World'}
             style={{ height: 30, margin: 10, paddingLeft: 10 }}
             placeholder={'From'}
             ref={r => (this.locAInput = r)}
           />
+          To:
           <input
             defaultValue={'Kitsilano Beach'}
             style={{ height: 30, margin: 10, paddingLeft: 10 }}
             placeholder={'To'}
             ref={r => (this.locBInput = r)}
           />
-          <button onClick={this.drawPolyline}>DRAW LINE</button>
+          <button onClick={this.drawPolyline}>GET DIRECTIONS</button>
         </div>
         <div style={styles.fill}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
