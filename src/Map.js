@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map, Polyline, GoogleApiWrapper } from 'google-maps-react'
+import { Map, Marker, Polyline, GoogleApiWrapper } from 'google-maps-react'
 import scoreDirections, { getPaths } from './computation'
 import Legend from './Legend'
 
@@ -20,6 +20,8 @@ export class MapContainer extends Component {
     bikeLanesPolylines: [],
     drawBikelanes: true,
     bounds: null,
+    originMarkerLatLng: null,
+    destMarkerLatLng: null,
   }
   componentDidMount() {
     const paths = getPaths()
@@ -52,6 +54,12 @@ export class MapContainer extends Component {
   drawPolyline = async () => {
     const locationALatLng = await this.getLatLng(this.locAInput.value)
     const locationBLatLng = await this.getLatLng(this.locBInput.value)
+
+    this.setState({
+      originMarkerLatLng: locationALatLng,
+      destMarkerLatLng: locationBLatLng,
+    })
+
     var locationA = new this.props.google.maps.LatLng(
       locationALatLng.lat,
       locationALatLng.lng
@@ -140,13 +148,13 @@ export class MapContainer extends Component {
         <div>
           <input
             defaultValue={'Science World'}
-            style={{ height: 30, margin: 10 }}
+            style={{ height: 30, margin: 10, paddingLeft: 10 }}
             placeholder={'From'}
             ref={r => (this.locAInput = r)}
           />
           <input
             defaultValue={'Kitsilano Beach'}
-            style={{ height: 30, margin: 10 }}
+            style={{ height: 30, margin: 10, paddingLeft: 10 }}
             placeholder={'To'}
             ref={r => (this.locBInput = r)}
           />
@@ -196,6 +204,18 @@ export class MapContainer extends Component {
             strokeOpacity={0.8}
             strokeWeight={2}
           /> */}
+              {!!this.state.originMarkerLatLng && (
+                <Marker
+                  name={'Origin'}
+                  position={this.state.originMarkerLatLng}
+                />
+              )}
+              {!!this.state.destMarkerLatLng && (
+                <Marker
+                  name={'Destination'}
+                  position={this.state.destMarkerLatLng}
+                />
+              )}
               {this.state.drawBikelanes
                 ? this.state.bikeLanesPolylines.map((val, index) => {
                     return (
