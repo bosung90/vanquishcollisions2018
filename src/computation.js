@@ -4,7 +4,7 @@ import * as utm from 'utm'
 import bikewaysSt from './bikeways'
 import directionsObject from './scienceworld_kitsbeach'
 
-var paths = []
+let paths = []
 
 const loadBikePaths = () => {
   let parsedCsv = Papa.parse(bikewaysSt, { header: true })
@@ -144,3 +144,4 @@ loadBikePaths()
 // test()
 
 export default scoreDirections
+export const getPaths = () => paths

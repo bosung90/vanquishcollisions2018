@@ -9,21 +9,25 @@ export default class Legend extends React.Component {
         <Dot color="yellow" label="Painted Lanes" />
         <Dot color="orange" label="Shared Lanes" />
         <Dot color="red" label="Non-Bike Lanes" />
+        <Dot size={5} color="#aaa" label="Bike Lanes" />
       </div>
     )
   }
 }
 
-const Dot = ({ color, label }) => {
+const Dot = ({ size = 20, color, label }) => {
   return (
     <div
       style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
     >
       <div
         style={{
-          margin: 10,
-          width: 20,
-          height: 20,
+          marginTop: 10,
+          marginBottom: 10,
+          marginLeft: 20 - size / 2,
+          marginRight: 20 - size / 2,
+          width: size,
+          height: size,
           borderRadius: 10,
           backgroundColor: color,
         }}

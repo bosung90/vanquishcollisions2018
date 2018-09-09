@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Map, Polyline, GoogleApiWrapper } from 'google-maps-react'
 import polyline from '@mapbox/polyline'
-import scoreDirections from './computation'
+import scoreDirections, { getPaths } from './computation'
 import Legend from './Legend'
 
 export class MapContainer extends Component {
@@ -18,7 +18,22 @@ export class MapContainer extends Component {
     ],
     // scoredPolylines
     scoredPolylines: [],
+    bikeLanesPolylines: [],
     bounds: null,
+  }
+  componentDidMount() {
+    const paths = getPaths()
+    if (paths) {
+      const bikeLanesPolylines = paths.map(bikeLanePath => {
+        return {
+          polyline: bikeLanePath.map(val => {
+            return { lat: val.latitude, lng: val.longitude }
+          }),
+          type: bikeLanePath.length > 0 && bikeLanePath[0].STREET_TYP,
+        }
+      })
+      this.setState({ bikeLanesPolylines })
+    }
   }
   getLatLng = async address => {
     return new Promise((resolve, reject) => {
@@ -160,6 +175,17 @@ export class MapContainer extends Component {
                       255}, 0, 1`}
                     strokeOpacity={0.8}
                     strokeWeight={4}
+                  />
+                )
+              })}
+              {this.state.bikeLanesPolylines.map((val, index) => {
+                return (
+                  <Polyline
+                    key={index}
+                    path={val.polyline}
+                    strokeColor={`#666`}
+                    strokeOpacity={0.4}
+                    strokeWeight={1.5}
                   />
                 )
               })}
