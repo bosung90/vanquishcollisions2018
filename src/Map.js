@@ -37,7 +37,6 @@ export class MapContainer extends Component {
       <div>
         <button onClick={this.drawPolyline}>DRAW LINE</button>
         <Map
-          style={{ width: '100%', height: '100%', position: 'relative' }}
           google={this.props.google}
           initialCenter={{
             lat: 49.2827,
