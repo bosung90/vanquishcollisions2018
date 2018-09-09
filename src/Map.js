@@ -154,12 +154,14 @@ export class MapContainer extends Component {
     // red 0-1 ,oragne 1 to 1.5, yellow 1.5 to 2.5, olive 2.5 to 3.5, green >=3.5
 
     let color = 'red'
+    let textColor = 'white'
     if (avgScore >= 3.5) {
       color = 'green'
     } else if (avgScore >= 2.5) {
       color = 'olive'
     } else if (avgScore >= 1.5) {
       color = 'yellow'
+      textColor = 'black'
     } else if (avgScore >= 1) {
       color = 'orange'
     }
@@ -171,7 +173,7 @@ export class MapContainer extends Component {
           height: 100,
           backgroundColor: color,
           borderRadius: 50,
-          color: 'white',
+          color: textColor,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
