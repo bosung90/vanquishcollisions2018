@@ -9,7 +9,11 @@ export default class Legend extends React.Component {
         <Dot color="yellow" label="Painted Lanes" />
         <Dot color="orange" label="Shared Lanes" />
         <Dot color="red" label="Non-Bike Lanes" />
-        <Dot size={5} color="#aaa" label="Bike Lanes" />
+
+        <Dot color="white" label="" />
+        <Dot color="white" label="" />
+
+        <Dot color="#aaa" label="All Bike Routes" />
       </div>
     )
   }

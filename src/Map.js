@@ -179,6 +179,17 @@ export class MapContainer extends Component {
             strokeOpacity={0.8}
             strokeWeight={2}
           /> */}
+              {this.state.bikeLanesPolylines.map((val, index) => {
+                return (
+                  <Polyline
+                    key={index}
+                    path={val.polyline}
+                    strokeColor={`#666`}
+                    strokeOpacity={0.4}
+                    strokeWeight={3}
+                  />
+                )
+              })}
               {this.state.scoredPolylines.map((val, index) => {
                 let color = 'Red'
                 switch (val.score) {
@@ -207,17 +218,6 @@ export class MapContainer extends Component {
                     strokeColor={color}
                     strokeOpacity={0.8}
                     strokeWeight={4}
-                  />
-                )
-              })}
-              {this.state.bikeLanesPolylines.map((val, index) => {
-                return (
-                  <Polyline
-                    key={index}
-                    path={val.polyline}
-                    strokeColor={`#666`}
-                    strokeOpacity={0.4}
-                    strokeWeight={1.5}
                   />
                 )
               })}
