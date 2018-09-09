@@ -53,7 +53,7 @@ export class MapContainer extends Component {
     this.directionsService.route(request, (response, status) => {
       if (status === 'OK') {
         // change response to add score
-        scoreDirections(response)
+        let scoredDirections = scoreDirections(response)
 
         // Calculate bounds
         let points = [
@@ -72,30 +72,43 @@ export class MapContainer extends Component {
         }
         this.setState({ bounds })
 
-        for (let route of response.routes) {
-          for (let leg of route.legs) {
-            const scoredPolylines = []
-            for (let step of leg.steps) {
-              const stepPoints = polyline.decode(step.polyline.points)
-              const score = step.score
-              // const path = step.path
-              scoredPolylines.push({
-                polyline: stepPoints.map(val => {
-                  return { lat: val[0], lng: val[1] }
-                }),
-                score,
-              })
-            }
-            this.setState({ scoredPolylines })
-          }
-        }
+        // for (let route of response.routes) {
+        //   for (let leg of route.legs) {
+        //     const scoredPolylines = []
+        //     for (let step of leg.steps) {
+        //       const stepPoints = polyline.decode(step.polyline.points)
+        //       const score = step.score
+        //       // const path = step.path
+        //       scoredPolylines.push({
+        //         polyline: stepPoints.map(val => {
+        //           return { lat: val[0], lng: val[1] }
+        //         }),
+        //         score,
+        //       })
+        //     }
+        //     this.setState({ scoredPolylines })
+        //   }
+        // }
 
-        const polyArrays = polyline.decode(response.routes[0].overview_polyline)
-        this.setState({
-          polyline: polyArrays.map(val => {
-            return { lat: val[0], lng: val[1] }
-          }),
-        })
+        const scoredPolylines = []
+        for (let element of scoredDirections) {
+          scoredPolylines.push({
+            polyline: [
+              { lat: element.start_latitude, lng: element.start_longitude },
+              { lat: element.end_latitude, lng: element.end_longitude },
+            ],
+            score: element.score,
+          })
+        }
+        this.setState({ scoredPolylines })
+        console.log(scoredDirections)
+
+        // const polyArrays = polyline.decode(response.routes[0].overview_polyline)
+        // this.setState({
+        //   polyline: polyArrays.map(val => {
+        //     return { lat: val[0], lng: val[1] }
+        //   }),
+        // })
       }
     })
   }
@@ -131,12 +144,31 @@ export class MapContainer extends Component {
             strokeWeight={2}
           /> */}
           {this.state.scoredPolylines.map((val, index) => {
+            let color = 'Red'
+            switch (val.score) {
+              case 4:
+                color = 'Green' // Protected bike lanes
+                break
+              case 3:
+                color = 'Olive' // Local street
+                break
+              case 2:
+                color = 'Yellow' // Painted lanes
+                break
+              case 1:
+                color = 'Orange' // Shared lanes
+                break
+              default:
+                color = 'Red'
+            }
+
             return (
               <Polyline
                 key={index}
                 path={val.polyline}
-                strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
-                  255}, 0, 1`}
+                // strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
+                //   255}, 0, 1`}
+                strokeColor={color}
                 strokeOpacity={0.8}
                 strokeWeight={4}
               />
