@@ -139,6 +139,49 @@ export class MapContainer extends Component {
       }
     })
   }
+  renderScore = () => {
+    let totalScore = 0
+    let scoreCount = 0
+    for (let val of this.state.scoredPolylines) {
+      totalScore += val.score
+      scoreCount++
+    }
+
+    if (scoreCount <= 0) return null
+
+    const avgScore = (totalScore / scoreCount).toFixed(1)
+
+    // red 0-1 ,oragne 1 to 1.5, yellow 1.5 to 2.5, olive 2.5 to 3.5, green >=3.5
+
+    let color = 'red'
+    if (avgScore >= 3.5) {
+      color = 'green'
+    } else if (avgScore >= 2.5) {
+      color = 'olive'
+    } else if (avgScore >= 1.5) {
+      color = 'yellow'
+    } else if (avgScore >= 1) {
+      color = 'orange'
+    }
+
+    return (
+      <div
+        style={{
+          width: 50,
+          height: 50,
+          backgroundColor: color,
+          borderRadius: 25,
+          color: 'white',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}
+      >
+        {avgScore}
+      </div>
+    )
+  }
   render() {
     return (
       <div
@@ -165,6 +208,7 @@ export class MapContainer extends Component {
         </div>
         <div style={styles.fill}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {this.renderScore()}
             <Legend />
             <div
               style={{ display: 'flex', flexDirection: 'row', marginLeft: 10 }}
@@ -258,8 +302,6 @@ export class MapContainer extends Component {
                   <Polyline
                     key={index}
                     path={val.polyline}
-                    // strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
-                    //   255}, 0, 1`}
                     strokeColor={color}
                     strokeOpacity={0.8}
                     strokeWeight={4}
