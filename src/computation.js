@@ -95,7 +95,7 @@ const closestBikePath = (longitude, latitude) => {
 }
 
 const scoreDirections = directions => {
-  const toleranceThresholdMeters = 50
+  const toleranceThresholdMeters = 100
   const toleranceThresholdDegrees = toleranceThresholdMeters / (1800.0 * 60.0)
 
   let polyline = require('@mapbox/polyline')
@@ -123,6 +123,7 @@ const scoreDirections = directions => {
           ) {
             // The score for the step is the average score for segments of its polyline
             step.score += 1 / (stepPoints.length - 1)
+            step.path = closestPath1.path
           }
         }
 

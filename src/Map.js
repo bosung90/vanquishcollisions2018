@@ -10,10 +10,13 @@ export class MapContainer extends Component {
     selectedPlace: {
       name: 'Vancouver',
     },
+    // Overview
     polyline: [
       { lat: 49.2734, lng: -123.1038 },
       { lat: 49.2742, lng: -123.1547 },
     ],
+    // scoredPolylines
+    scoredPolylines: [],
     bounds: null,
   }
   getLatLng = async address => {
@@ -52,8 +55,6 @@ export class MapContainer extends Component {
         // change response to add score
         scoreDirections(response)
 
-        console.log(response)
-
         // Calculate bounds
         let points = [
           {
@@ -71,11 +72,21 @@ export class MapContainer extends Component {
         }
         this.setState({ bounds })
 
-        for (let route of directions.routes) {
+        for (let route of response.routes) {
           for (let leg of route.legs) {
+            const scoredPolylines = []
             for (let step of leg.steps) {
-              let stepPoints = polyline.decode(step.polyline.points)
+              const stepPoints = polyline.decode(step.polyline.points)
+              const score = step.score
+              // const path = step.path
+              scoredPolylines.push({
+                polyline: stepPoints.map(val => {
+                  return { lat: val[0], lng: val[1] }
+                }),
+                score,
+              })
             }
+            this.setState({ scoredPolylines })
           }
         }
 
@@ -90,7 +101,7 @@ export class MapContainer extends Component {
   }
   render() {
     return (
-      <div>
+      <div style={{ marginTop: 0 }}>
         <input
           defaultValue={'Science World'}
           style={{ height: 30, margin: 10 }}
@@ -113,12 +124,24 @@ export class MapContainer extends Component {
           }}
           zoom={14}
         >
-          <Polyline
+          {/* <Polyline
             path={this.state.polyline}
             strokeColor="#0000FF"
             strokeOpacity={0.8}
             strokeWeight={2}
-          />
+          /> */}
+          {this.state.scoredPolylines.map((val, index) => {
+            return (
+              <Polyline
+                key={index}
+                path={val.polyline}
+                strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
+                  255}, 0, 1`}
+                strokeOpacity={0.8}
+                strokeWeight={4}
+              />
+            )
+          })}
         </Map>
       </div>
     )
