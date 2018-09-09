@@ -167,17 +167,21 @@ export class MapContainer extends Component {
     return (
       <div
         style={{
-          width: 50,
-          height: 50,
+          width: 100,
+          height: 100,
           backgroundColor: color,
-          borderRadius: 25,
+          borderRadius: 50,
           color: 'white',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
+          fontSize: 23,
+          marginBottom: 30,
         }}
       >
+        Score
+        <br />
         {avgScore}
       </div>
     )
@@ -222,7 +226,9 @@ export class MapContainer extends Component {
                 }}
                 checked={this.state.drawBikelanes}
               />
-              <label htmlFor="checkboxInput">Show Bike Lanes</label>
+              <label style={{ marginLeft: 10 }} htmlFor="checkboxInput">
+                Show All Routes
+              </label>
             </div>
           </div>
 
