@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Map, Polyline, GoogleApiWrapper } from 'google-maps-react'
 import polyline from '@mapbox/polyline'
 import scoreDirections from './computation'
+import Legend from './Legend'
 
 export class MapContainer extends Component {
   directionsService = new this.props.google.maps.DirectionsService()
@@ -114,30 +115,50 @@ export class MapContainer extends Component {
   }
   render() {
     return (
-      <div style={{ marginTop: 0 }}>
-        <input
-          defaultValue={'Science World'}
-          style={{ height: 30, margin: 10 }}
-          placeholder={'From'}
-          ref={r => (this.locAInput = r)}
-        />
-        <input
-          defaultValue={'Kitsilano Beach'}
-          style={{ height: 30, margin: 10 }}
-          placeholder={'To'}
-          ref={r => (this.locBInput = r)}
-        />
-        <button onClick={this.drawPolyline}>DRAW LINE</button>
-        <Map
-          bounds={this.state.bounds}
-          google={this.props.google}
-          initialCenter={{
-            lat: 49.2827,
-            lng: -123.1207,
-          }}
-          zoom={14}
-        >
-          {/* <Polyline
+      <div
+        style={{
+          ...styles.fill,
+          flexDirection: 'column',
+          height: '85vh',
+        }}
+      >
+        <div>
+          <input
+            defaultValue={'Science World'}
+            style={{ height: 30, margin: 10 }}
+            placeholder={'From'}
+            ref={r => (this.locAInput = r)}
+          />
+          <input
+            defaultValue={'Kitsilano Beach'}
+            style={{ height: 30, margin: 10 }}
+            placeholder={'To'}
+            ref={r => (this.locBInput = r)}
+          />
+          <button onClick={this.drawPolyline}>DRAW LINE</button>
+        </div>
+        <div style={styles.fill}>
+          <Legend />
+          <div
+            style={{
+              ...styles.fill,
+              position: 'relative',
+            }}
+          >
+            <Map
+              style={{
+                ...styles.fill,
+                height: '100%',
+              }}
+              bounds={this.state.bounds}
+              google={this.props.google}
+              initialCenter={{
+                lat: 49.257,
+                lng: -123.1207,
+              }}
+              zoom={13}
+            >
+              {/* <Polyline
             path={this.state.polyline}
             strokeColor="#0000FF"
             strokeOpacity={0.8}
@@ -175,9 +196,18 @@ export class MapContainer extends Component {
             )
           })}
         </Map>
+          </div>
+        </div>
       </div>
     )
   }
+}
+
+const styles = {
+  fill: {
+    display: 'flex',
+    flex: 1,
+  },
 }
 
 export default GoogleApiWrapper({
