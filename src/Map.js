@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Map, Polyline, GoogleApiWrapper } from 'google-maps-react'
 import polyline from '@mapbox/polyline'
+import scoreDirections from './computation'
 
 export class MapContainer extends Component {
   directionsService = new this.props.google.maps.DirectionsService()
@@ -48,6 +49,11 @@ export class MapContainer extends Component {
     }
     this.directionsService.route(request, (response, status) => {
       if (status === 'OK') {
+        // change response to add score
+        scoreDirections(response)
+
+        console.log(response)
+
         // Calculate bounds
         let points = [
           {
@@ -64,6 +70,15 @@ export class MapContainer extends Component {
           bounds.extend(points[i])
         }
         this.setState({ bounds })
+
+        for (let route of directions.routes) {
+          for (let leg of route.legs) {
+            for (let step of leg.steps) {
+              let stepPoints = polyline.decode(step.polyline.points)
+            }
+          }
+        }
+
         const polyArrays = polyline.decode(response.routes[0].overview_polyline)
         this.setState({
           polyline: polyArrays.map(val => {
