@@ -101,48 +101,71 @@ export class MapContainer extends Component {
   }
   render() {
     return (
-      <div style={{ marginTop: 0 }}>
-        <input
-          defaultValue={'Science World'}
-          style={{ height: 30, margin: 10 }}
-          placeholder={'From'}
-          ref={r => (this.locAInput = r)}
-        />
-        <input
-          defaultValue={'Kitsilano Beach'}
-          style={{ height: 30, margin: 10 }}
-          placeholder={'To'}
-          ref={r => (this.locBInput = r)}
-        />
-        <button onClick={this.drawPolyline}>DRAW LINE</button>
-        <Map
-          bounds={this.state.bounds}
-          google={this.props.google}
-          initialCenter={{
-            lat: 49.2827,
-            lng: -123.1207,
+      <div
+        style={{
+          flexDirection: 'column',
+          display: 'flex',
+          height: '85vh',
+          flex: 1,
+        }}
+      >
+        <div>
+          <input
+            defaultValue={'Science World'}
+            style={{ height: 30, margin: 10 }}
+            placeholder={'From'}
+            ref={r => (this.locAInput = r)}
+          />
+          <input
+            defaultValue={'Kitsilano Beach'}
+            style={{ height: 30, margin: 10 }}
+            placeholder={'To'}
+            ref={r => (this.locBInput = r)}
+          />
+          <button onClick={this.drawPolyline}>DRAW LINE</button>
+        </div>
+        <div
+          style={{
+            marginLeft: 180,
+            display: 'flex',
+            flex: 1,
+            position: 'relative',
           }}
-          zoom={14}
         >
-          {/* <Polyline
+          <Map
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+            }}
+            bounds={this.state.bounds}
+            google={this.props.google}
+            initialCenter={{
+              lat: 49.2827,
+              lng: -123.1207,
+            }}
+            zoom={14}
+          >
+            {/* <Polyline
             path={this.state.polyline}
             strokeColor="#0000FF"
             strokeOpacity={0.8}
             strokeWeight={2}
           /> */}
-          {this.state.scoredPolylines.map((val, index) => {
-            return (
-              <Polyline
-                key={index}
-                path={val.polyline}
-                strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
-                  255}, 0, 1`}
-                strokeOpacity={0.8}
-                strokeWeight={4}
-              />
-            )
-          })}
-        </Map>
+            {this.state.scoredPolylines.map((val, index) => {
+              return (
+                <Polyline
+                  key={index}
+                  path={val.polyline}
+                  strokeColor={`rgba(${(1 - val.score) * 255},${val.score *
+                    255}, 0, 1`}
+                  strokeOpacity={0.8}
+                  strokeWeight={4}
+                />
+              )
+            })}
+          </Map>
+        </div>
       </div>
     )
   }
