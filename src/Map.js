@@ -60,6 +60,9 @@ export class MapContainer extends Component {
       destMarkerLatLng: locationBLatLng,
     })
 
+    this.drawPolyLineWithLatLng(locationALatLng, locationBLatLng)
+  }
+  drawPolyLineWithLatLng = (locationALatLng, locationBLatLng) => {
     var locationA = new this.props.google.maps.LatLng(
       locationALatLng.lat,
       locationALatLng.lng
@@ -197,6 +200,7 @@ export class MapContainer extends Component {
                 lng: -123.1207,
               }}
               zoom={13}
+              onClick={this.onMapClicked}
             >
               {/* <Polyline
             path={this.state.polyline}
@@ -208,12 +212,14 @@ export class MapContainer extends Component {
                 <Marker
                   name={'Origin'}
                   position={this.state.originMarkerLatLng}
+                  onClick={this.onOriginMarkerClick}
                 />
               )}
               {!!this.state.destMarkerLatLng && (
                 <Marker
                   name={'Destination'}
                   position={this.state.destMarkerLatLng}
+                  onClick={this.onDestMarkerClick}
                 />
               )}
               {this.state.drawBikelanes
@@ -265,6 +271,29 @@ export class MapContainer extends Component {
         </div>
       </div>
     )
+  }
+  onOriginMarkerClick = () => {
+    this.setState({ originMarkerLatLng: null })
+  }
+  onDestMarkerClick = () => {
+    this.setState({ destMarkerLatLng: null })
+  }
+  onMapClicked = (t, map, c) => {
+    const lat = c.latLng.lat()
+    const lng = c.latLng.lng()
+    if (this.state.originMarkerLatLng === null) {
+      this.setState({ originMarkerLatLng: { lat, lng } })
+      if (this.state.destMarkerLatLng !== null) {
+        // redraw polyline
+        this.drawPolyLineWithLatLng({ lat, lng }, this.state.destMarkerLatLng)
+      }
+    } else if (this.state.destMarkerLatLng === null) {
+      this.setState({ destMarkerLatLng: { lat, lng } })
+      if (this.state.originMarkerLatLng !== null) {
+        // redraw polyline
+        this.drawPolyLineWithLatLng(this.state.originMarkerLatLng, { lat, lng })
+      }
+    }
   }
 }
 
